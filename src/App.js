@@ -1,25 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from 'react'
+import './App.css'
+import { BrowserRouter, Routes, Route, Outlet, Navigate} from "react-router-dom";
+import Todo from './Components/Todo';
+import Feed from './Components/Feed';
+import Request from './Components/AllRequests';
+import Analytics from './Components/Analytics';
+import Addtask from './Components/Addtask';
+import './Components/CloudFirestone';
+import { AuthContextProvider } from './Context/AuthContext';
+import Signin from './Components/Signin';
+
+function Home(){
+  return(
+    <div className='Home'>
+      <Todo></Todo>
+      <div>
+        <Feed></Feed>
+        <Request></Request>
+      </div>
+    </div>
+    
+  );
+}
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <AuthContextProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path='/signin' element={<Signin></Signin>}></Route>
+            <Route path='/' element={<Home></Home>}>
+              <Route path='/analytics' element={<Analytics></Analytics>}></Route>
+              <Route path='/addtask' element={<Addtask></Addtask>}></Route>
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </AuthContextProvider>
     </div>
+      
   );
 }
 
 export default App;
+

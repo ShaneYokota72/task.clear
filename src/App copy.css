@@ -72,7 +72,6 @@ html, body{
 }
 .headingleft{
   display: flex;
-  align-items: center;
 }
 .logoutbutton{
   height: fit-content;
