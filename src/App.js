@@ -3,7 +3,7 @@ import './App.css'
 import { BrowserRouter, Routes, Route, Outlet, Navigate} from "react-router-dom";
 import Todo from './Components/Todo';
 import Feed from './Components/Feed';
-import Request from './Components/AllRequests';
+import AllRequests from './Components/AllRequests';
 import Analytics from './Components/Analytics';
 import Addtask from './Components/Addtask';
 import './Components/CloudFirestone';
@@ -16,7 +16,7 @@ function Home(){
       <Todo></Todo>
       <div>
         <Feed></Feed>
-        <Request></Request>
+        <AllRequests></AllRequests>
       </div>
     </div>
     

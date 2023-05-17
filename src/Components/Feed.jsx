@@ -13,17 +13,27 @@ export default function Feed(){
     const {user} = UserAuth();
     const[colabtask, setcolabtask] = useState([]);
     
+    /* async function getuid(){
+        const usr = await user;
+        // if(usr == null){
+        //     //wait 1 second for user to load
+        //     await new Promise(r => setTimeout(r, 1000));
+        // }
+        return usr.uid;
+    } */
+
     useEffect(()=>{
         async function filterdata(){
             let classesincluded = [];
             let dontinclude = [];
-            const docRef = doc(db, 'User', user?.uid);
+            const uid = user?.uid/* getuid() */;
+            const docRef = doc(db, 'User', String(uid));
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
                 classesincluded = docSnap.data().allclass;
                 dontinclude = docSnap.data().deniedfeed;
             } else {
-                console.log("No such document!");
+                // console.log("No such document!");
             }
 
             const q = query(collection(db, "TaskColab"));

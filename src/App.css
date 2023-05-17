@@ -77,6 +77,10 @@ html, body{
 .logoutbutton{
   height: fit-content;
 }
+.logoLT{
+  width: 100px;
+  margin-right: 25px;
+}
 .TodoDiv{
   width: 50vw;
   height: 100vh;

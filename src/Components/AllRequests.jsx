@@ -12,8 +12,19 @@ export default function AllRequests(){
     const {user} = UserAuth();
     const [request, setrequest] = useState([]);
 
+    /* async function getuid(){
+        const usr = await user;
+        // if(usr == null){
+        //     //wait 1 second for user to load
+        //     await new Promise(r => setTimeout(r, 1000));
+        // }
+        // console.log(`await in allreq usr: ${usr.uid}`)
+        return usr.uid;
+    } */
+
     useEffect(()=>{
-        const q = query(collection(db, 'User', user?.uid, 'Requests'));
+        const uid = user?.uid/* getuid() */;
+        const q = query(collection(db, 'User', String(uid), 'Requests'));
         const unsubscribe = onSnapshot(q, querySnapshot => {
             let todoarray = []
             querySnapshot.forEach((doc)=> {

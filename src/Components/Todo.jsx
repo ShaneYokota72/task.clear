@@ -80,7 +80,7 @@ export default function Todo(){
             <div className='TodoContent'>
               <div className="heading">
                 <div className='headingleft'>
-                    <img id="logo-image" src={logo}/>
+                    <img id="logo-image" src={logo} className='logoLT'/>
                     <h1 className='greetingheader'>Welcome back, <b>{user?.displayName.split(' ')[0]}</b></h1>   
                 </div>
                 <button className='logoutbutton' onClick={handleSignOut}>logout</button>
@@ -95,7 +95,7 @@ export default function Todo(){
                         <button className='analytics'><Link style={{color:'black'}} to="/analytics">analytics</Link></button>
                         <Link className='backtohomebutton' to="/addtask">
                             <div className="request-button">
-                                <a href="/home/addtask"><img id="taskImage" src={addbutton} onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave}/></a>
+                                <img id="taskImage" src={addbutton} onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave}/>
                             </div>
                             
                         </Link>
@@ -110,7 +110,7 @@ export default function Todo(){
                         </div>
                     ) : (
                         <div className='empty-message'>
-                            <img id="logo-image" src="../public/logo.svg"/>
+                            <img id="logo-image" src={logo}/>
                             <h3>No tasks available</h3>
                         </div>
                     )

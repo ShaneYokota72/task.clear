@@ -5298,7 +5298,6 @@ export default function Addtask(){
         'GERO 794a',
         'GERO 794b',
         'GERO 794c',
-        'GERO 794c',
         'GERO 794d',
         'GERO 794z',
         'GESM 110g',
