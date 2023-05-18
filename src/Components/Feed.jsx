@@ -18,10 +18,18 @@ export default function Feed(){
             const uid = user?.uid;
             const docRef = doc(db, 'User', String(uid));
             const docSnap = await getDoc(docRef);
+            let q = null;
+            let path = false;
             // get user's allclass and deniedfeed
             if (docSnap.exists()) {
                 classesincluded = docSnap.data().allclass;
+                classesincluded.push("DummyClass");
                 dontinclude = docSnap.data().deniedfeed;
+                dontinclude.push("DummyTask");
+                q = query(collection(db, "TaskColab"), where("cname", "in", classesincluded), where("username", "!=", String(uid)));
+                path = true;
+            } else {
+                q = query(collection(db, "TaskColab"), where("username", "!=", String(uid)));
             }
 
             /* const q = query(collection(db, "TaskColab"));
@@ -40,19 +48,21 @@ export default function Feed(){
                 setcolabtask(filteredData3);
             }) */
 
-            const q = query(
-                collection(db, "TaskColab"),
-                where("cname", "in", classesincluded),
-                where("id", "not-in", dontinclude),
-                where("username", "!=", user.uid)
-            );
+            // const q = query(collection(db, "TaskColab"), where("cname", "in", classesincluded), where("id", "not-in", dontinclude), where("username", "!=", String(uid)));
             
             const unsubscribe = onSnapshot(q, querySnapshot => {
                 let todoarray = [];
                 querySnapshot.forEach((doc) => {
                     todoarray.push({ ...doc.data(), id: doc.id });
                 });
-                setcolabtask(todoarray);
+                console.log("taskcolab all", path, todoarray);
+                // filter out so that already denied feed wont show
+                if(path){
+                    const filteredarr = todoarray.filter(item => !dontinclude.includes(item.id));
+                    setcolabtask(filteredarr);
+                } else {
+                    setcolabtask(todoarray);
+                }
             });
             return () => unsubscribe();
         }
