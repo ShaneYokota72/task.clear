@@ -37,7 +37,7 @@ export default function RequestItem(props){
     }
 
     const sendEmail = (templateobj) => {    
-        emailjs.send(process.env.REACT_APP_emailjs_service, REACT_APP_emailjs_template, templateobj, REACT_APP_emailjs_publickey);
+        emailjs.send(process.env.REACT_APP_emailjs_service, process.env.REACT_APP_emailjs_template, templateobj, process.env.REACT_APP_emailjs_publickey);
     };
 
     async function acceptrequest(props){

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../App.css';
 import FeedEntry from './FeedEntry';
 
-import { query, collection, onSnapshot, doc, getDoc} from "firebase/firestore";
+import { query, collection, onSnapshot, doc, getDoc, where} from "firebase/firestore";
 import {db} from '../firebase';
 
 import { UserAuth } from '../Context/AuthContext';

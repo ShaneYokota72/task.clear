@@ -1,12 +1,10 @@
-import { useEffect, useState } from 'react'
 import './App.css'
-import { BrowserRouter, Routes, Route, Outlet, Navigate} from "react-router-dom";
+import { BrowserRouter, Routes, Route} from "react-router-dom";
 import Todo from './Components/Todo';
 import Feed from './Components/Feed';
 import AllRequests from './Components/AllRequests';
 import Analytics from './Components/Analytics';
 import Addtask from './Components/Addtask';
-import './Components/CloudFirestone';
 import { AuthContextProvider } from './Context/AuthContext';
 import Signin from './Components/Signin';
 
