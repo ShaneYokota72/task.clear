@@ -24,8 +24,10 @@ export default function Feed(){
             if (docSnap.exists()) {
                 classesincluded = docSnap.data().allclass;
                 classesincluded.push("DummyClass");
+                // console.log("classesincluded", classesincluded);
                 dontinclude = docSnap.data().deniedfeed;
                 dontinclude.push("DummyTask");
+                // console.log("dontinclude", dontinclude);
                 q = query(collection(db, "TaskColab"), where("cname", "in", classesincluded), where("username", "!=", String(uid)));
                 path = true;
             } else {
@@ -59,6 +61,7 @@ export default function Feed(){
                 // filter out so that already denied feed wont show
                 if(path){
                     const filteredarr = todoarray.filter(item => !dontinclude.includes(item.id));
+                    // console.log("taskcolab filtered", filteredarr);
                     setcolabtask(filteredarr);
                 } else {
                     setcolabtask(todoarray);

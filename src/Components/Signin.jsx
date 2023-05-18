@@ -2,7 +2,7 @@ import React, { useEffect } from  'react'
 import {GoogleButton} from 'react-google-button'
 import { UserAuth } from '../Context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { doc, getDoc, updateDoc, query, collection, onSnapshot} from 'firebase/firestore';
+import { doc, getDoc, updateDoc, query, collection, onSnapshot, setDoc} from 'firebase/firestore';
 import { db } from '../firebase';
 
 import signinimg from '../Images/SigninLeft.png';
@@ -52,6 +52,14 @@ export default function Signin(){
                             name: name,
                             useremail: user.email,
                             deniedfeed: filtereddenied
+                        });
+                    } else {
+                        // console.log("docid", docid);
+                        setDoc(docRef, {
+                            name: name,
+                            useremail: user.email,
+                            allclass: [],
+                            deniedfeed: ['placeholder']
                         });
                     }
                 })
