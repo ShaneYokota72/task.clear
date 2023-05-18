@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import '../App.css';
-import { Outlet } from 'react-router-dom';
 import RequestItem from "./IndividualRequest";
 
 import { query, collection, onSnapshot } from "firebase/firestore";
@@ -12,18 +11,9 @@ export default function AllRequests(){
     const {user} = UserAuth();
     const [request, setrequest] = useState([]);
 
-    /* async function getuid(){
-        const usr = await user;
-        // if(usr == null){
-        //     //wait 1 second for user to load
-        //     await new Promise(r => setTimeout(r, 1000));
-        // }
-        // console.log(`await in allreq usr: ${usr.uid}`)
-        return usr.uid;
-    } */
-
+    // get all the requests from the database
     useEffect(()=>{
-        const uid = user?.uid/* getuid() */;
+        const uid = user?.uid;
         const q = query(collection(db, 'User', String(uid), 'Requests'));
         const unsubscribe = onSnapshot(q, querySnapshot => {
             let todoarray = []

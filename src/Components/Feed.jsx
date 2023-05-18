@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import '../App.css';
-import { Outlet, useFetcher } from 'react-router-dom';
-import RequestItem from './IndividualRequest';
 import FeedEntry from './FeedEntry';
 
 import { query, collection, onSnapshot, doc, getDoc} from "firebase/firestore";
@@ -13,27 +11,17 @@ export default function Feed(){
     const {user} = UserAuth();
     const[colabtask, setcolabtask] = useState([]);
     
-    /* async function getuid(){
-        const usr = await user;
-        // if(usr == null){
-        //     //wait 1 second for user to load
-        //     await new Promise(r => setTimeout(r, 1000));
-        // }
-        return usr.uid;
-    } */
-
     useEffect(()=>{
         async function filterdata(){
             let classesincluded = [];
             let dontinclude = [];
-            const uid = user?.uid/* getuid() */;
+            const uid = user?.uid;
             const docRef = doc(db, 'User', String(uid));
             const docSnap = await getDoc(docRef);
+            // get user's allclass and deniedfeed
             if (docSnap.exists()) {
                 classesincluded = docSnap.data().allclass;
                 dontinclude = docSnap.data().deniedfeed;
-            } else {
-                // console.log("No such document!");
             }
 
             const q = query(collection(db, "TaskColab"));
@@ -54,9 +42,7 @@ export default function Feed(){
             return () => unsubscribe();
         }
         filterdata();
-    })
-    // console.log("colabtask");
-    // console.log(colabtask);
+    }, []);
 
 
     return(

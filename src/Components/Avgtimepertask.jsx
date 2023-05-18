@@ -2,7 +2,6 @@ import React from 'react';
 import '../App.css';
 
 export default function Avgtimepertask(props){
-    // console.log(props);
     let avgtime = 0;
     for(let i=0; i<props.avgtime.length; i++){
         avgtime += props.avgtime[i];

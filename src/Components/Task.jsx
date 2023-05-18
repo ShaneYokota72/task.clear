@@ -2,11 +2,10 @@ import React from 'react';
 import { useState, useEffect} from 'react';
 import '../App.css';
 
-import { deleteDoc, doc, getDoc, getDocs, updateDoc, query, collection, onSnapshot, setDoc } from "firebase/firestore";
+import { deleteDoc, doc, getDoc, getDocs, updateDoc, query, collection, setDoc } from "firebase/firestore";
 import {db} from '../firebase';
 
 import { UserAuth } from '../Context/AuthContext';
-import { getIdToken } from 'firebase/auth';
 import taskcomp_a from '../Images/Group 100.png';
 import taskcomp_b from '../Images/Group 103.png';
 import taskdel_a from '../Images/TaskDel_a.png';
@@ -40,6 +39,7 @@ export default function Task(props){
     const undoHoverX = () => {
         settaskdel(taskdel_a)
     }
+
     useEffect(() => {
         let interval;
         if(isActive && !isPaused){
@@ -61,11 +61,7 @@ export default function Task(props){
     }
 
     function handleStart(){
-        // console.log("handlestart");
-        // console.log("props", props);
-        // console.log("time", time);
         seta_time(time);
-        // console.log(`a_time set to ${time}`);
         const docRef = doc(db, 'User', user.uid, 'Assignments', props.id);
         getDoc(docRef)
             .then((snapshot) => {
@@ -85,7 +81,6 @@ export default function Task(props){
     async function add_daily_time(time_to_add){
         const today = new Date();
         const formattedDate = today.toISOString().split('T')[0];
-        // console.log("formattedDate",formattedDate);
 
         const daily_breakdown_Ref = doc(db, 'User', user.uid, 'DailyBreakdown', formattedDate)
         getDoc(daily_breakdown_Ref)
@@ -105,10 +100,6 @@ export default function Task(props){
     }
 
     function handlePause(){
-        // console.log("handlepause");
-        // console.log("props", props);
-        // console.log("time", time);
-        // console.log(`time to add to daily time ${time - a_time}`);
         add_daily_time((time - a_time))
         const docRef = doc(db, 'User', user.uid, 'Assignments', props.id);
         getDoc(docRef)
@@ -133,7 +124,7 @@ export default function Task(props){
         const querySnapshot = await getDocs(assignments);
         querySnapshot.forEach((doc) => {
             if (!allcurrent_tasks.includes(doc.data().cname)) {
-            allcurrent_tasks.push(doc.data().cname);
+                allcurrent_tasks.push(doc.data().cname);
             }
         });
 
@@ -154,15 +145,12 @@ export default function Task(props){
     }
 
     async function addtoanalysis(props){
-        console.log("adding to analysitcs");
         const docRef = doc(db, 'User', user.uid, 'Analytics', props.cname);
         getDoc(docRef)
             .then((snapshot) => {
                 if (snapshot.exists()) {
                     let originalavgtime = snapshot.data().avgtime;
-                    // console.log("originalavgtime before", originalavgtime);
                     originalavgtime.push(props.timespent);
-                    // console.log("originalavgtime after", originalavgtime);
                     updateDoc(docRef, {
                         avgtime : originalavgtime
                     })
@@ -175,7 +163,6 @@ export default function Task(props){
     }
 
     async function deletetask(props){
-        // console.log("props passed", props);
         await deleteDoc(doc(db, 'User', user.uid, 'Assignments', props.id));
         await deleteDoc(doc(db, 'TaskColab', props.id));
         setIsActive(false);
@@ -185,11 +172,6 @@ export default function Task(props){
     }
 
     const taskcompleted = async (props) => {
-        // await deleteDoc(doc(db, 'User', user.uid, 'Assignments', props.id));
-        // await deleteDoc(doc(db, 'TaskColab', props.id));
-        // setIsActive(false);
-        // setIsPaused(true);
-        // setbcont("Start");
         await deletetask(props);
         // in addition, save to the analysis db
         await addtoanalysis(props);

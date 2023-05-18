@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../App.css';
 import Avgtimepertask from './Avgtimepertask';
 import Timebreakdown from './Timebreakdown';
@@ -13,6 +13,7 @@ export default function Analytics(){
     const {user} = UserAuth();
     const [analytics, setanalytics] = useState(null);
 
+    // get all the analytics from the database
     useEffect(() => {
         const q = query(collection(db, "User", user.uid, "Analytics"));
         const unsubscribe = onSnapshot(q, quarySnapshot => {
@@ -25,7 +26,6 @@ export default function Analytics(){
         })
         return () => unsubscribe();
     }, [])
-
     // console.log(analytics);
 
     return(

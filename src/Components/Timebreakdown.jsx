@@ -10,30 +10,8 @@ import {db} from '../firebase';
 export default function Timebreakdown(){
     const {user} = UserAuth();
     const [past7days_studytime, Setpast7days_studytime] = useState([])
-    // DB visual idea
-
-    //     studyHours (collection) 
-    //    |
-    //    |- 2023-05-10 (document)
-    //    |    |- hours: 5
-    //    |
-    //    |- 2023-05-11 (document)
-    //    |    |- hours: 3
-    //    |
-    //    |- 2023-05-12 (document)
-    //    |    |- hours: 6
-    //    |
-    //    |- 2023-05-13 (document)
-    //    |    |- hours: 4
-    //    |
-    //    |- 2023-05-14 (document)
-    //    |    |- hours: 5
-    //    |
-    //    |- 2023-05-15 (document)
-    //    |    |- hours: 6
-    //    |
-    //    |- 2023-05-16 (document)
-    //         |- hours: 4
+    const today = new Date();
+    const past7Days = [];
 
     function formatTime(time) {
         const date = new Date(time * 1000);
@@ -43,18 +21,12 @@ export default function Timebreakdown(){
         return `${hours}hr ${minutes}min ${seconds}sec`;
     }
 
-    const today = new Date();
-    const past7Days = [];
-
     // Get the timestamps for the past 7 days
     for (let i = 0; i < 7; i++) {
         const day = new Date(today);
         day.setDate(today.getDate() - i);
         past7Days.push(day.toISOString().split('T')[0]);
-    }
-
-    // working
-    // console.log("past7Days", past7Days);    
+    } 
     
     useEffect(() => {
         async function past7studyhours(){
@@ -65,8 +37,6 @@ export default function Timebreakdown(){
                     let temp = doc.data();
                     todoarray.push([doc.id, temp['dailytime']]);
                 });
-                // console.log("todoarray", todoarray);
-                // console.log("past7Days", past7Days);
 
                 let max = -1; // Start with a very low initial value
                 for (let i = 0; i < todoarray.length; i++) {
@@ -80,13 +50,11 @@ export default function Timebreakdown(){
                     const match = todoarray.find(item => item[0] === date);
                     const value = match ? match[1] : 0;
                     const linebreak = document.getElementById(`avgtimelinebreak${index}`);
-                    // console.log(`value is ${value} at index ${index}`);
                     let length = value*70/max;
-                    // console.log("length", length);
                     linebreak.style.width = `${length}%`;  
                     return value;                 
                 });
-                // console.log("result", result);
+                
                 Setpast7days_studytime(result);
             })
             return () => unsubscribe();

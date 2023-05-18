@@ -37,17 +37,10 @@ export default function RequestItem(props){
     }
 
     const sendEmail = (templateobj) => {    
-        emailjs.send(import.meta.env.VITE_emailjs_service, import.meta.env.VITE_emailjs_template, templateobj, import.meta.env.VITE_emailjs_publickey)
-          .then((result) => {
-            //   console.log(result.text);
-          }, (error) => {
-              console.log(error.text);
-          });
+        emailjs.send(process.env.REACT_APP_emailjs_service, REACT_APP_emailjs_template, templateobj, REACT_APP_emailjs_publickey);
     };
 
     async function acceptrequest(props){
-        // await deleteDoc(doc(db, 'ShaneRequest', props.id));
-        // notify the acception via email
         // delete the data from the DB
         requestdel(props);
         let requester_email = "";
@@ -76,6 +69,8 @@ export default function RequestItem(props){
             loc: temp_loc,
             t: temp_t
         };
+        
+        // notify the acception via email
         sendEmail(templateParams);
 
         // console.log(`Email to ${requester_email}. Accepted request for ${props.cname} on task ${props.aname} at ${props.loc} on ${props.t}`);

@@ -1,8 +1,7 @@
 import '../App.css';
 import React, { useState } from "react"
-import { Outlet } from 'react-router-dom';
 
-import { addDoc , deleteDoc, doc, collection, getDoc, updateDoc} from "firebase/firestore";
+import { addDoc, doc, collection, getDoc, updateDoc} from "firebase/firestore";
 import {db} from '../firebase';
 
 import taskcomp_a from '../Images/Group 100.png';
@@ -32,21 +31,16 @@ export default function FeedEntry(props){
 
 
     async function feedclicked(props){
-        // console.log("deleting feed");
         const docid = user.uid;
         const docRef = doc(db, 'User', docid);
-
         
         let existingData = [];
         let originaldenied = [];
         getDoc(docRef)
             .then((snapshot) => {
-                if (snapshot.exists()) {
-                    existingData = snapshot.data();
-                    // console.log("snapshot data", snapshot.data());
-                    originaldenied = existingData.deniedfeed;
+                if(snapshot.exists()) {
+                    originaldenied = snapshot.data().deniedfeed;
                     originaldenied.push(props.id);
-                    // console.log("originaldenied", originaldenied);
                     updateDoc(docRef, {
                         deniedfeed: originaldenied
                     });
@@ -58,7 +52,6 @@ export default function FeedEntry(props){
     }
 
     async function addtorequested(props){
-        // console.log("adding to requested");
         const userDocRef = doc(db, 'User', props.username);
         const RequestRef = collection(userDocRef, 'Requests');
         await addDoc(RequestRef, {
@@ -76,15 +69,12 @@ export default function FeedEntry(props){
 
     async function feedaccepted(props){
         feedclicked(props);
-        // console.log("props", props);
-        // send notif/email to the other user
         // add to db
         addtorequested(props);
     }
 
     async function feeddenied(props){
         feedclicked(props);
-        // console.log("props", props);
     }
 
     return(

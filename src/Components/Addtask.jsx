@@ -11959,27 +11959,11 @@ export default function Addtask(){
         // if its a new class, add to the allclass list
         if(!classesincluded.includes(coursename)){
             classesincluded.push(coursename);
+            updateDoc(userDocRef, {
+                allclass: classesincluded
+            })
         }
-        updateDoc(userDocRef, {
-            allclass: classesincluded
-        })
-
-        /* 
-        // get user's class list from all assignments
-        let Assignmentclasses = []
-        const q = query(collection(db, "User", user.uid, "Assignments"));
-        onSnapshot(q, querySnapshot => {
-            querySnapshot.forEach((doc)=> {
-                if(!Assignmentclasses.includes(...doc.data().cname)){
-                    Assignmentclasses.push(...doc.data().cname);
-                }
-                // Assignmentclasses.push({...doc.data().cname})
-            });
-        })
-        console.log("assignmentclasses", Assignmentclasses);
-        // go through all the assignments and see if the class of the assignment is in the classessincluded list. If it is, then move on. If not, the add. */ 
-
-
+        
 
         const AssignmentRef = collection(userDocRef, 'Assignments');
         if(location !== '' && time !== '' && numpeople !== ''){

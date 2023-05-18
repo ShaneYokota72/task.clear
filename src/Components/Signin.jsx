@@ -2,7 +2,7 @@ import React, { useEffect } from  'react'
 import {GoogleButton} from 'react-google-button'
 import { UserAuth } from '../Context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { doc, setDoc, getDoc, updateDoc, query, collection, onSnapshot} from 'firebase/firestore';
+import { doc, getDoc, updateDoc, query, collection, onSnapshot} from 'firebase/firestore';
 import { db } from '../firebase';
 
 import signinimg from '../Images/SigninLeft.png';
@@ -18,10 +18,7 @@ export default function Signin(){
         } catch (error) {
             console.log(error);   
         }
-    }
-
-    // console.log(import.meta.env.VITE_fb_apiKey);
-    
+    }    
     
     useEffect(() => {
         
@@ -43,24 +40,17 @@ export default function Signin(){
             getDoc(docRef)
                 .then((snapshot) => {
                     if (snapshot.exists()) {
-                        const existingData = snapshot.data();
-                        // setDoc(docRef, {
-                        //     ...existingData,
-                        //     name: name,
-                        // })
-                        updateDoc(docRef, {
-                            name: name,
-                            useremail: user.email,
-                        })
-                        const originaldenied = existingData.deniedfeed;
+                        const originaldenied = snapshot.data().deniedfeed;
                         let alltaskcolab = [];
                         for(let i = 0; i < todoarray.length; i++){
                             alltaskcolab.push(todoarray[i].id);
                         }
                         let filtereddenied = originaldenied.filter((item) => alltaskcolab.includes(item));
                         filtereddenied.push('placeholder');
-                        // update the denied list for faster runtime every feed search
+                        // update the denied list, name, and email for faster runtime every feed search
                         updateDoc(docRef, {
+                            name: name,
+                            useremail: user.email,
                             deniedfeed: filtereddenied
                         });
                     }

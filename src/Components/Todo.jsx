@@ -8,38 +8,20 @@ import logo from '../Images/Component 1.png';
 import addtask_a from '../Images/add-task-a.png';
 import addtask_b from '../Images/add-task-b.png';
 
-import { query, collection, onSnapshot, doc} from "firebase/firestore";
+import { query, collection, onSnapshot} from "firebase/firestore";
 import {db} from '../firebase';
 
 export default function Todo(){
     const {user, logOut} = UserAuth();
-    const [taskData, setTaskData] = useState(null);
     const [addbutton, setaddbutton] = useState(addtask_a);
+    const [userdata, setuserdata] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
-        const q = query(collection(db, 'Shane'));
-        const unsubscribe = onSnapshot(q, querySnapshot => {
-            let todoarray = []
-            querySnapshot.forEach((doc)=> {
-                todoarray.push({...doc.data(), id:doc.id})
-            });
-            setTaskData(todoarray);
-        })
-        return () => unsubscribe();
-    }, [])
-    
-    // console.log(taskData);
-
-    const [userdata, setuserdata] = useState(null);
-
-    useEffect(() => {
-        const q = collection(db, 'User');
         if(user == null){
             return;
         }
         const assignments = query(collection(db, 'User', user.uid, 'Assignments'));
-
         const allassignments = onSnapshot(assignments, querySnapshot => {
             let todoarray = []
             querySnapshot.forEach((doc)=> {
@@ -48,10 +30,7 @@ export default function Todo(){
             setuserdata(todoarray);
         })
         return () => allassignments();
-    }, [])
-    
-    // console.log("userassignments");
-    // console.log(userdata);
+    }, []);
     
     const handleMouseOver = () => {
         setaddbutton(addtask_b);
