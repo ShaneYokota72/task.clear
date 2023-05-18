@@ -1,5 +1,5 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/ShaneYokota72/task-clear)
-![image](https://user-images.githubusercontent.com/108847923/234070277-0e5c36c6-6757-48c2-bc0f-cc8443ec458f.png)
+![image](https://raw.githubusercontent.com/ShaneYokota72/task-clear/main/src/Images/task.clear%20UI.png)
 
 ## What it task.clear?
 Productivity is often the number one priority for many people. All of us has experienced assignments and projects pile up throughout the week: the problem our app aims to solve.
