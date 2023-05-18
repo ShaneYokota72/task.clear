@@ -29,7 +29,6 @@ export default function FeedEntry(props){
         setRedXSrc(taskdel_a)
     }
 
-
     async function feedclicked(props){
         const docid = user.uid;
         const docRef = doc(db, 'User', docid);

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../App.css';
 import FeedEntry from './FeedEntry';
 
-import { query, collection, onSnapshot, doc, getDoc, where} from "firebase/firestore";
+import { query, collection, onSnapshot, doc, getDoc, where, DocumentReference} from "firebase/firestore";
 import {db} from '../firebase';
 
 import { UserAuth } from '../Context/AuthContext';
@@ -12,66 +12,45 @@ export default function Feed(){
     const[colabtask, setcolabtask] = useState([]);
     
     useEffect(()=>{
-        async function filterdata(){
-            let classesincluded = [];
-            let dontinclude = [];
-            const uid = user?.uid;
-            const docRef = doc(db, 'User', String(uid));
-            const docSnap = await getDoc(docRef);
-            let q = null;
-            let path = false;
-            // get user's allclass and deniedfeed
-            if (docSnap.exists()) {
-                classesincluded = docSnap.data().allclass;
-                classesincluded.push("DummyClass");
-                // console.log("classesincluded", classesincluded);
-                dontinclude = docSnap.data().deniedfeed;
-                dontinclude.push("DummyTask");
-                // console.log("dontinclude", dontinclude);
-                q = query(collection(db, "TaskColab"), where("cname", "in", classesincluded), where("username", "!=", String(uid)));
-                path = true;
-            } else {
-                q = query(collection(db, "TaskColab"), where("username", "!=", String(uid)));
-            }
-
-            /* const q = query(collection(db, "TaskColab"));
-            const unsubscribe = onSnapshot(q, querySnapshot => {
-                let todoarray = []
-                querySnapshot.forEach((doc)=> {
-                    todoarray.push({...doc.data(), id:doc.id})
-                });
-                // filter to only get the class the user take
-                const filteredData = todoarray.filter(item => classesincluded.includes(item.cname));
-                // filter out so that already denied feed wont show
-                const filteredData2 = filteredData.filter(item => !dontinclude.includes(item.id));
-                // filter out so that the user wont see his own task
-                const filteredData3 = filteredData2.filter(item => item.username != user.uid);
-                // set the colab tasks after all the filteration
-                setcolabtask(filteredData3);
-            }) */
-
-            // const q = query(collection(db, "TaskColab"), where("cname", "in", classesincluded), where("id", "not-in", dontinclude), where("username", "!=", String(uid)));
-            
-            const unsubscribe = onSnapshot(q, querySnapshot => {
-                let todoarray = [];
-                querySnapshot.forEach((doc) => {
-                    todoarray.push({ ...doc.data(), id: doc.id });
-                });
-                // console.log("taskcolab all", path, todoarray);
-                // filter out so that already denied feed wont show
-                if(path){
-                    const filteredarr = todoarray.filter(item => !dontinclude.includes(item.id));
-                    // console.log("taskcolab filtered", filteredarr);
-                    setcolabtask(filteredarr);
+        let classesincluded = [];
+        let dontinclude = [];
+        const uid = user?.uid;
+        const docRef = doc(db, 'User', String(uid));
+        // const docSnap = await getDoc(docRef);
+        let q = null;
+        let path = false;
+        getDoc(docRef)
+            .then((snapshot) => {
+                if(snapshot.exists()){
+                    classesincluded = snapshot.data().allclass;
+                    classesincluded.push("DummyClass");
+                    // console.log("classesincluded", classesincluded);
+                    dontinclude = snapshot.data().deniedfeed;
+                    dontinclude.push("DummyTask");
+                    // console.log("dontinclude", dontinclude);
+                    q = query(collection(db, "TaskColab"), where("cname", "in", classesincluded), where("username", "!=", String(uid)));
+                    path = true;
                 } else {
-                    setcolabtask(todoarray);
+                    q = query(collection(db, "TaskColab"), where("username", "!=", String(uid)));
                 }
-            });
-            return () => unsubscribe();
-        }
-        filterdata();
-    }, []);
 
+                const unsubscribe = onSnapshot(q, querySnapshot => {
+                    let todoarray = [];
+                    querySnapshot.forEach((doc) => {
+                        todoarray.push({ ...doc.data(), id: doc.id });
+                    });
+                    // console.log("taskcolab all", path, todoarray);
+                    // filter out so that already denied feed wont show
+                    if(path){
+                        const filteredarr = todoarray.filter(item => !dontinclude.includes(item.id));
+                        setcolabtask(filteredarr);
+                    } else {
+                        setcolabtask(todoarray);
+                    }
+                });
+                return () => unsubscribe();
+            })
+    });
 
     return(
         <div className='FeedDiv'>
