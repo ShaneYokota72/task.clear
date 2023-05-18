@@ -4,7 +4,7 @@ import '../App.css';
 
 import { UserAuth } from '../Context/AuthContext';
 
-import {getDoc, onSnapshot, doc, collection, query} from "firebase/firestore";
+import { onSnapshot, collection, query} from "firebase/firestore";
 import {db} from '../firebase';
 
 export default function Timebreakdown(){
@@ -54,7 +54,7 @@ export default function Timebreakdown(){
                     linebreak.style.width = `${length}%`;  
                     return value;                 
                 });
-                
+
                 Setpast7days_studytime(result);
             })
             return () => unsubscribe();

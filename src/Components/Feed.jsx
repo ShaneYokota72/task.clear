@@ -55,7 +55,7 @@ export default function Feed(){
                 querySnapshot.forEach((doc) => {
                     todoarray.push({ ...doc.data(), id: doc.id });
                 });
-                console.log("taskcolab all", path, todoarray);
+                // console.log("taskcolab all", path, todoarray);
                 // filter out so that already denied feed wont show
                 if(path){
                     const filteredarr = todoarray.filter(item => !dontinclude.includes(item.id));
