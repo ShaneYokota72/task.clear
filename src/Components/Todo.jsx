@@ -57,17 +57,17 @@ export default function Todo(){
     return(
         <div className='TodoDiv'>
             <div className='TodoContent'>
-              <div className="heading">
-                <div className='headingleft'>
-                    <img id="logo-image" src={logo} className='logoLT'/>
-                    <h1 className='greetingheader'>Welcome back, <b>{user?.displayName.split(' ')[0]}</b></h1>   
+                <div className="heading">
+                    <div className='headingleft'>
+                        <img id="logo-image" src={logo} className='logoLT'/>
+                        <h1 className='greetingheader'>Welcome back, <b>{user?.displayName.split(' ')[0]}</b></h1>   
+                    </div>
+                    <button className='logoutbutton' onClick={handleSignOut}>logout</button>
                 </div>
-                <button className='logoutbutton' onClick={handleSignOut}>logout</button>
-              </div>
 
                 <div className='Todosub'>
                     <div>
-                        <h1 className='nomargintext'>To-do</h1>
+                        <h1 className='nomargintext' style={{color: "#213547"}}>To-do</h1>
                         <h4 className='nomargintext'>here are your tasks for today</h4>
                     </div>
                     <div className='todorighttop'>
@@ -90,7 +90,7 @@ export default function Todo(){
                     ) : (
                         <div className='empty-message'>
                             <img id="logo-image" src={logo}/>
-                            <h3>No tasks available</h3>
+                            <h3 style={{color: "#213547"}} >No tasks available</h3>
                         </div>
                     )
                 }

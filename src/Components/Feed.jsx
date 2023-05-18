@@ -24,7 +24,7 @@ export default function Feed(){
                 dontinclude = docSnap.data().deniedfeed;
             }
 
-            const q = query(collection(db, "TaskColab"));
+            /* const q = query(collection(db, "TaskColab"));
             const unsubscribe = onSnapshot(q, querySnapshot => {
                 let todoarray = []
                 querySnapshot.forEach((doc)=> {
@@ -38,7 +38,22 @@ export default function Feed(){
                 const filteredData3 = filteredData2.filter(item => item.username != user.uid);
                 // set the colab tasks after all the filteration
                 setcolabtask(filteredData3);
-            })
+            }) */
+
+            const q = query(
+                collection(db, "TaskColab"),
+                where("cname", "in", classesincluded),
+                where("id", "not-in", dontinclude),
+                where("username", "!=", user.uid)
+            );
+            
+            const unsubscribe = onSnapshot(q, querySnapshot => {
+                let todoarray = [];
+                querySnapshot.forEach((doc) => {
+                    todoarray.push({ ...doc.data(), id: doc.id });
+                });
+                setcolabtask(todoarray);
+            });
             return () => unsubscribe();
         }
         filterdata();
@@ -59,7 +74,7 @@ export default function Feed(){
                 :
                 (
                     <div className='nomatchfeed'>
-                        <h1> No matching tasks found </h1>
+                        <h1 style={{color: "#213547"}}> No matching tasks found </h1>
                     </div>
                 )
                 

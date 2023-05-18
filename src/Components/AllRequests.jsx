@@ -43,7 +43,7 @@ export default function AllRequests(){
                         :
                         (
                             <div className='noincomingreq'>
-                                <h1> No Incoming Requests... </h1>
+                                <h1 style={{color: "#213547"}}> No Incoming Requests... </h1>
                             </div>
                         )
                     }

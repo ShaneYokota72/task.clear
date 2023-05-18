@@ -187,7 +187,7 @@ export default function Task(props){
                 <h3>{props.ddate}</h3>
             </div>
             <div className='Timer'>
-                <h1>{formatTime(time)/* time */}</h1>
+                <h1 style={{color: "#213547"}}>{formatTime(time)/* time */}</h1>
                 <div className='timerbutton'>
                     <button onClick={() => handleStart()} className="start-resume-button">{bcont}</button>
                     <button onClick={() => handlePause()} className="pause-button"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" className="bi bi-pause" viewBox="0 0 16 16">
