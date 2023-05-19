@@ -33,7 +33,6 @@ export default function FeedEntry(props){
         const docid = user.uid;
         const docRef = doc(db, 'User', docid);
         
-        let existingData = [];
         let originaldenied = [];
         getDoc(docRef)
             .then((snapshot) => {
